@@ -1,24 +1,31 @@
+/*
+ * @Author: Mr.Car
+ * @Date: 2025-02-26 16:22:02
+ */
 "use client";
 
 import { notFound } from "next/navigation";
-import { FormEvent } from "react";
+import React, { FormEvent, Usable } from "react";
 import { useState, useEffect } from "react";
 import { Post } from "@/types"
 
-export default function PostDetail({ params }: { params: { id: string } }) {
+export default function PostDetail({ params }: { params: Usable<{ id: string }> }) {
   const [post , setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
+  
+  // 使用 React.use() 解包 params
+  const { id } = React.use(params) as { id:string };
 
   useEffect(() => {
     async function loadPost() {
-      const res = await fetch(`/api/posts/${params.id}`);
+      const res = await fetch(`/api/posts/${id}`); // 使用解包后的 id
       if (!res.ok) notFound();
       const data = await res.json();
       setPost(data);
       setLoading(false);
     }
     loadPost();
-  }, [params.id]);
+  }, [id]);
 
   if (loading) return (
     <main className="min-h-screen bg-dune-base">
@@ -49,7 +56,7 @@ export default function PostDetail({ params }: { params: { id: string } }) {
     if (res.ok) {
       form.reset();
       // 重新获取帖子数据以更新评论列表
-      const postRes = await fetch(`/api/posts/${params.id}`);
+      const postRes = await fetch(`/api/posts/${id}`); // 使用解包后的 id
       if (postRes.ok) {
         const updatedPost = await postRes.json();
         setPost(updatedPost);
