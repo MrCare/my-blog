@@ -8,6 +8,7 @@ import { notFound } from "next/navigation";
 import React, { FormEvent, Usable } from "react";
 import { useState, useEffect } from "react";
 import { Post } from "@/types"
+import MDEditor from "@uiw/react-md-editor"; // 导入 MDEditor
 
 export default function PostDetail({ params }: { params: Usable<{ id: string }> }) {
   const [post , setPost] = useState<Post | null>(null);
@@ -70,7 +71,9 @@ export default function PostDetail({ params }: { params: Usable<{ id: string }> 
         <article className="bg-white p-8 rounded-lg shadow-lg border border-gray-200">
           <h1 className="text-4xl font-bold text-gray-900 mb-4 tracking-wide">{post.title}</h1>
           <p className="text-sm text-gray-600 mb-6">{new Date(post.createdAt).toLocaleDateString()}</p>
-          <div className="prose text-gray-800 mb-8">{post.content}</div>
+          <div className="prose text-gray-800 mb-8">
+            <MDEditor.Markdown source={post.content} /> {/* 使用 MDEditor 的解析器 */}
+          </div>
 
           <section className="mt-8">
             <h2 className="text-2xl font-semibold text-gray-900 mb-4">评论</h2>
