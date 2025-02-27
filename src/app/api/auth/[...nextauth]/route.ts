@@ -4,6 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcrypt";
 import { AuthOptions } from "next-auth";
+import { JWT } from "next-auth/jwt";
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -48,11 +49,12 @@ export const authOptions: AuthOptions = {
       }
       return token;
     },
-    async session({ session, token }) {
-      if (session.user && token?.role) {
+    // fucking werid, when "session" is "any", nothing wrong; but when it's "Session" warnings happens
+    async session({ session, token }: { session: any; token: JWT }) {
+      if (session.user && typeof token.role === 'string') {
         session.user.role = token.role;
       }
-      if (session.user && token?.id) {
+      if (session.user && typeof token.id === 'string') {
         session.user.id = token.id;
       }
       return session;

@@ -2,23 +2,23 @@
 
 import { notFound } from "next/navigation";
 import { FormEvent } from "react";
-import React from 'react';
+import { useState, useEffect } from "react";
+import { Post } from "@/types"
 
 export default function PostDetail({ params }: { params: { id: string } }) {
-  const resolvedParams = React.use(params);
-  const [post, setPost] = React.useState<any>(null);
-  const [loading, setLoading] = React.useState(true);
+  const [post , setPost] = useState<Post | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function loadPost() {
-      const res = await fetch(`/api/posts/${resolvedParams.id}`);
+      const res = await fetch(`/api/posts/${params.id}`);
       if (!res.ok) notFound();
       const data = await res.json();
       setPost(data);
       setLoading(false);
     }
     loadPost();
-  }, [resolvedParams.id]);
+  }, [params.id]);
 
   if (loading) return (
     <main className="min-h-screen bg-dune-base">
@@ -42,14 +42,14 @@ export default function PostDetail({ params }: { params: { id: string } }) {
 
     const res = await fetch("/api/comments", {
       method: "POST",
-      body: JSON.stringify({ content, postId: post.id, macId }),
+      body: JSON.stringify({ content, postId: post?.id, macId }),
       headers: { "Content-Type": "application/json" },
     });
 
     if (res.ok) {
       form.reset();
       // 重新获取帖子数据以更新评论列表
-      const postRes = await fetch(`/api/posts/${resolvedParams.id}`);
+      const postRes = await fetch(`/api/posts/${params.id}`);
       if (postRes.ok) {
         const updatedPost = await postRes.json();
         setPost(updatedPost);

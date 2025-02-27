@@ -3,24 +3,32 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { FormEvent } from "react";
+import { User, Session } from "@/types";
+
 
 export default function NewPost() {
-  const { data: session } = useSession();
+  const { data: session } = useSession() as {data: Session | null};
   const router = useRouter();
 
-  if (!session || session.user.role !== "ADMIN") {
-    return <div className="min-h-screen bg-gray-50 text-gray-900 flex items-center justify-center">仅管理员可访问此页面</div>;
+  if (!session || (session.user as User).role !== "ADMIN") {
+    return (
+      <div className="min-h-screen bg-gray-50 text-gray-900 flex items-center justify-center">
+        仅管理员可访问此页面
+      </div>
+    );
   }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
     const title = form.title.value;
     const content = form.content.value;
 
     const res = await fetch("/api/posts", {
       method: "POST",
-      body: JSON.stringify({ title, content, authorId: Number(session.user.id) }),
+      body: JSON.stringify({ title, content, authorId: Number(session?.user.id) }),
       headers: { "Content-Type": "application/json" },
     });
 

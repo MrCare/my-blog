@@ -1,14 +1,14 @@
 import "./globals.css";
 import Link from "next/link";
 import Providers from "@/components/Providers";
-import LogoutButton from "@/components/logoutButton"
-
+import LogoutButton from "@/components/LogoutButton"
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
-import { signOut } from "next-auth/react";
+import { Session } from "@/types";
+
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const session = await getServerSession(authOptions);  
+  const session: Session | null = await getServerSession(authOptions);  
   return (
     <html lang="zh">
       <body>

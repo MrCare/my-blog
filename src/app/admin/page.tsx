@@ -7,9 +7,29 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
+interface SessionUser {
+  role: string;
+}
+
+interface Session {
+  user: SessionUser;
+}
+
+interface Post {
+  id: number;
+  title: string;
+  comments: Comment[];
+}
+
+interface Comment {
+  id: number;
+  content: string;
+  macId: string;
+}
+
 export default function AdminPanel() {
-  const { data: session } = useSession();
-  const [posts, setPosts] = useState([]); // 添加状态来存储帖子
+  const { data: session } = useSession() as { data: Session | null };
+  const [posts, setPosts] = useState<Post[]>([]); // 添加状态来存储帖子
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -27,17 +47,19 @@ export default function AdminPanel() {
 
   async function deleteComment(commentId: number) {
     await fetch(`/api/comments/${commentId}`, { method: "DELETE" });
+    window.location.reload(); // 刷新当前页面
     // 这里可以添加删除后更新状态的逻辑
+    window.location.reload(); // 刷新当前页面
   }
 
   return (
     <main className="max-w-5xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
       <h1 className="text-2xl font-extrabold text-dune-accent mb-12 text-center tracking-tight">管理面板</h1>
-      {posts.map((post) => (
+      {posts.map((post: Post) => (
         <div key={post.id} className="mb-8 p-6 bg-dune-dark/90 rounded-lg shadow-lg border border-dune-muted">
           <h2 className="text-2xl font-semibold text-dune-sand mb-4">{post.title}</h2>
           <h3 className="text-lg text-dune-sand/70 mb-2">评论</h3>
-          {post.comments.map((comment) => (
+          {post.comments.map((comment: Comment) => (
             <div key={comment.id} className="p-4 bg-dune-muted/50 rounded-md mb-4 flex justify-between items-center">
               <div>
                 <p className="text-dune-sand">{comment.content}</p>
