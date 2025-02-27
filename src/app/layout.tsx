@@ -1,29 +1,43 @@
 import "./globals.css";
 import Link from "next/link";
+import Providers from "@/components/Providers";
+import LogoutButton from "@/components/logoutButton"
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+import { getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]/route";
+import { signOut } from "next-auth/react";
+
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const session = await getServerSession(authOptions);  
   return (
     <html lang="zh">
       <body>
-        <nav className="bg-white shadow-md sticky top-0 z-10">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-            <Link href="/" className="text-xl font-bold text-gray-900">
-              我的博客
-            </Link>
-            <div className="space-x-4">
-              <Link href="/" className="text-gray-600 hover:text-blue-600">
-                主页
+        <Providers>
+          <nav className="bg-white shadow-md sticky top-0 z-10">
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+              <Link href="/" className="text-xl font-bold text-gray-900">
+                Life Blog
               </Link>
-              <Link
-                href="/posts/new"
-                className="text-gray-600 hover:text-blue-600"
-              >
-                新建文章
-              </Link>
+              <div className="space-x-4">
+                <Link href="/" className="text-gray-600 hover:text-blue-600">
+                  主页
+                </Link>
+                {session?.user.role === "ADMIN" && (
+                <>
+                  <Link href="/posts/new" className="text-gray-600 hover:text-blue-600 transition-colors">新建日志</Link>
+                  <Link href="/admin" className="text-gray-600 hover:text-blue-600 transition-colors">管理</Link>
+                </>
+              )}
+              {session ? (
+                <LogoutButton className="text-gray-600 hover:text-blue-600 transition-colors">登出</LogoutButton>
+              ) : (
+                <Link href="/auth/signin" className="text-gray-600 hover:text-blue-600 transition-colors">登录</Link>
+              )}
+              </div>
             </div>
-          </div>
-        </nav>
-        {children}
+          </nav>
+          {children}
+        </Providers>
       </body>
     </html>
   );

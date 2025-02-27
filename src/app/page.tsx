@@ -14,10 +14,10 @@ export default async function Home() {
     <div className="min-h-screen bg-gray-100">
       <main className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <h1 className="text-4xl font-extrabold text-gray-900 mb-8 text-center">
-          我的博客
+          Life Blog
         </h1>
         <div className="grid gap-6">
-          {posts.map((post: { id: string; title: string; createdAt: string }) => (
+          {posts.map((post: { id: string; title: string; createdAt: string; comments: unknown[] }) => (
             <Link
               href={`/posts/${post.id}`}
               key={post.id}
@@ -29,6 +29,9 @@ export default async function Home() {
               <p className="text-sm text-gray-500">
                 {new Date(post.createdAt).toLocaleDateString()}
               </p>
+              {post?.comments?.length > 0 && (
+                <p className="text-dune-sand/90 mt-2">{post.comments.length} 条评论</p>
+              )}
             </Link>
           ))}
         </div>
