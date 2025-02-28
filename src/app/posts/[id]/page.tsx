@@ -4,15 +4,20 @@
  */
 "use client";
 
-import { notFound } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import React, { FormEvent, Usable } from "react";
 import { useState, useEffect } from "react";
-import { Post } from "@/types"
+import { Post, Session } from "@/types"
 import MDEditor from "@uiw/react-md-editor"; // 导入 MDEditor
+import Loading from "@/components/Loading";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 export default function PostDetail({ params }: { params: Usable<{ id: string }> }) {
   const [post , setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
+  const { data: session } = useSession() as { data: Session | null };
+  const router = useRouter();
   
   // 使用 React.use() 解包 params
   const { id } = React.use(params) as { id:string };
@@ -28,17 +33,23 @@ export default function PostDetail({ params }: { params: Usable<{ id: string }> 
     loadPost();
   }, [id]);
 
+  // 删除博客
+  const handleDelete = async () => {
+    if (!confirm("确定要删除这篇日志吗？")) return;
+
+    const res = await fetch(`/api/posts/${id}`, {
+      method: "DELETE",
+    });
+
+    if (res.ok) {
+      router.push("/"); // 删除后跳转到首页
+    } else {
+      alert("删除失败");
+    }
+  };
+
   if (loading) return (
-    <main className="min-h-screen bg-dune-base">
-      <div className="max-w-5xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="animate-pulse flex flex-col items-center gap-4">
-            <div className="w-8 h-8 border-4 border-dune-accent border-t-transparent rounded-full animate-spin"></div>
-            <h1 className="text-dune-sand">加载中...</h1>
-          </div>
-        </div>
-      </div>
-    </main>
+    <Loading/>
   );
   if (!post) return null;
 
@@ -74,7 +85,23 @@ export default function PostDetail({ params }: { params: Usable<{ id: string }> 
           <div className="prose text-gray-800 mb-8">
             <MDEditor.Markdown source={post.content} /> {/* 使用 MDEditor 的解析器 */}
           </div>
-
+          {/* 管理员操作按钮 */}
+          {session && session.user.role === "ADMIN" && (
+            <div className="flex space-x-4 mb-8">
+              <Link
+                href={`/posts/edit/${id}`}
+                className="text-blue-600 hover:underline font-medium"
+              >
+                编辑
+              </Link>
+              <button
+                onClick={handleDelete}
+                className="text-red-600 hover:underline font-medium"
+              >
+                删除
+              </button>
+            </div>
+          )}
           <section className="mt-8">
             <h2 className="text-2xl font-semibold text-gray-900 mb-4">评论</h2>
             {post.comments?.map((comment: { id: number; content: string; macId: string; createdAt: string }) => (

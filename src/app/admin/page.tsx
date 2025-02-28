@@ -6,26 +6,7 @@
 
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-
-interface SessionUser {
-  role: string;
-}
-
-interface Session {
-  user: SessionUser;
-}
-
-interface Post {
-  id: number;
-  title: string;
-  comments: Comment[];
-}
-
-interface Comment {
-  id: number;
-  content: string;
-  macId: string;
-}
+import { Session, Post, Comment } from "@/types";
 
 export default function AdminPanel() {
   const { data: session } = useSession() as { data: Session | null };
@@ -42,7 +23,7 @@ export default function AdminPanel() {
   }, []); // 仅在组件挂载时运行
 
   if (!session || session.user.role !== "ADMIN") {
-    return <div className="min-h-screen bg-dune-dark text-dune-sand flex items-center justify-center">仅管理员可访问此页面</div>;
+    return <div className="min-h-screen bg-gray-100 text-black flex items-center justify-center">仅管理员可访问此页面</div>;
   }
 
   async function deleteComment(commentId: number) {
@@ -53,23 +34,27 @@ export default function AdminPanel() {
   }
 
   return (
-    <main className="max-w-5xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-      <h1 className="text-2xl font-extrabold text-dune-accent mb-12 text-center tracking-tight">管理面板</h1>
-      {posts.map((post: Post) => (
-        <div key={post.id} className="mb-8 p-6 bg-dune-dark/90 rounded-lg shadow-lg border border-dune-muted">
-          <h2 className="text-2xl font-semibold text-dune-sand mb-4">{post.title}</h2>
-          <h3 className="text-lg text-dune-sand/70 mb-2">评论</h3>
-          {post.comments.map((comment: Comment) => (
-            <div key={comment.id} className="p-4 bg-dune-muted/50 rounded-md mb-4 flex justify-between items-center">
-              <div>
-                <p className="text-dune-sand">{comment.content}</p>
-                <p className="text-sm text-dune-sand/70">由 {comment.macId} 发表</p>
+    <div className="min-h-screen bg-gray-100">
+      <main className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <h1 className="text-4xl font-extrabold text-gray-900 mb-8 text-center">
+          评论管理
+        </h1>
+        {posts.map((post: Post) => (
+          <div key={post.id} className="mb-8 p-6 rounded-lg shadow-lg border">
+            <h2 className="text-2xl font-semibold mb-4">{post.title}</h2>
+            <h3 className="text-lg mb-2">评论</h3>
+            {post.comments.map((comment: Comment) => (
+              <div key={comment.id} className="p-4 rounded-md mb-4 flex justify-between items-center">
+                <div>
+                  <p>{comment.content}</p>
+                  <p className="text-sm">由 {comment.macId} 发表</p>
+                </div>
+                <button onClick={() => deleteComment(comment.id)} className="hover:text-red-500">删除</button>
               </div>
-              <button onClick={() => deleteComment(comment.id)} className="text-dune-accent hover:text-dune-sand">删除</button>
-            </div>
-          ))}
-        </div>
-      ))}
-    </main>
+            ))}
+          </div>
+        ))}
+      </main>
+    </div>
   );
 }

@@ -3,10 +3,11 @@
  * @Date: 2025-02-26 16:05:27
  */
 import { prisma } from "@/lib/prisma";
+import { Post } from "@/types";
 import Link from "next/link";
 
 export default async function Home() {
-  const posts = await prisma.post.findMany({
+  const posts:Post[] = await prisma.post.findMany({
     orderBy: { createdAt: "desc" },
   });
 
@@ -17,7 +18,7 @@ export default async function Home() {
           Life Blog
         </h1>
         <div className="grid gap-6">
-          {posts.map((post: { id: string; title: string; createdAt: string; comments: unknown[] }) => (
+          {posts.map((post) => (
             <Link
               href={`/posts/${post.id}`}
               key={post.id}

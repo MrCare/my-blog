@@ -1,3 +1,7 @@
+/*
+ * @Author: Mr.Car
+ * @Date: 2025-02-26 17:23:24
+ */
 import "./globals.css";
 import Link from "next/link";
 import Providers from "@/components/Providers";
@@ -25,7 +29,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 {session?.user.role === "ADMIN" && (
                 <>
                   <Link href="/posts/new" className="text-gray-600 hover:text-blue-600 transition-colors">新建日志</Link>
-                  <Link href="/admin" className="text-gray-600 hover:text-blue-600 transition-colors">管理</Link>
+                  <Link href="/admin" className="text-gray-600 hover:text-blue-600 transition-colors">评论管理</Link>
                 </>
               )}
               {session ? (

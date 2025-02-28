@@ -18,3 +18,8 @@ export interface Post {
     createdAt: string;
     comments: { id: number; content: string; macId: string; createdAt: string }[];
 }
+export interface Comment {
+    id: number; // 评论的唯一标识符
+    content: string; // 评论内容
+    macId: string; // 发表评论的用户标识符
+}
