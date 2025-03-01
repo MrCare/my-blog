@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import { User, Session } from "@/types";
 import PostForm from "@/components/PostForm";
+import Loading from "@/components/Loading";
 
 export default function PostEditer({mode, id}:{mode:string, id:string}) {
   const { data: session } = useSession() as {data: Session | null};
@@ -67,7 +68,7 @@ export default function PostEditer({mode, id}:{mode:string, id:string}) {
     });
   }
 
-  if (loading) return <div>加载中...</div>;
+  if (loading) return <Loading/>;
 
   return (
     <main className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">

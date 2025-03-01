@@ -39,21 +39,23 @@ export default function AdminPanel() {
         <h1 className="text-4xl font-extrabold text-gray-900 mb-8 text-center">
           评论管理
         </h1>
-        {posts.map((post: Post) => (
-          <div key={post.id} className="mb-8 p-6 rounded-lg shadow-lg border">
-            <h2 className="text-2xl font-semibold mb-4">{post.title}</h2>
-            <h3 className="text-lg mb-2">评论</h3>
-            {post.comments.map((comment: Comment) => (
-              <div key={comment.id} className="p-4 rounded-md mb-4 flex justify-between items-center">
-                <div>
-                  <p>{comment.content}</p>
-                  <p className="text-sm">由 {comment.macId} 发表</p>
+        <div className="grid gap-6">
+          {posts.map((post: Post) => (
+            <div key={post.id} className="p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200">
+              <h2 className="text-xl font-semibold mb-4">{post.title}</h2>
+              <h3 className="text-lg mb-2">评论</h3>
+              {post?.comments && post.comments.map((comment: Comment) => (
+                <div key={comment.id} className="p-4 rounded-md mb-4 flex justify-between items-center">
+                  <div>
+                    <p>{comment.content}</p>
+                    <p className="text-sm">由 {comment.macId} 发表</p>
+                  </div>
+                  <button onClick={() => deleteComment(comment.id)} className="text-red-600 hover:underline font-medium">删除</button>
                 </div>
-                <button onClick={() => deleteComment(comment.id)} className="hover:text-red-500">删除</button>
-              </div>
-            ))}
-          </div>
-        ))}
+              ))}
+            </div>
+          ))}
+        </div>
       </main>
     </div>
   );

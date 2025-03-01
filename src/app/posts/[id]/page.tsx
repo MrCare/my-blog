@@ -77,7 +77,7 @@ export default function PostDetail({ params }: { params: Usable<{ id: string }> 
   }
 
   return (
-    <main className="min-h-screen bg-dune-base">
+    <main className="min-h-screen bg-gray-100">
       <div className="max-w-5xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <article className="bg-white p-8 rounded-lg shadow-lg border border-gray-200">
           <h1 className="text-4xl font-bold text-gray-900 mb-4 tracking-wide">{post.title}</h1>

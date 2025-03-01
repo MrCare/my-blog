@@ -12,11 +12,11 @@ export interface Session {
 }
 
 export interface Post {
-    id: string;
+    id: number;
     title: string;
     content: string;
-    createdAt: string;
-    comments: { id: number; content: string; macId: string; createdAt: string }[];
+    createdAt: Date;
+    comments?: { id: number; content: string; macId: string; createdAt: string }[];
 }
 export interface Comment {
     id: number; // 评论的唯一标识符
