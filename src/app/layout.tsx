@@ -7,7 +7,7 @@ import Link from "next/link";
 import Providers from "@/components/Providers";
 import LogoutButton from "@/components/LogoutButton"
 import { getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 import { Session } from "@/types";
 
 
