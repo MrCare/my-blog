@@ -40,6 +40,7 @@ export default function LoginPage() {
         router.refresh();
       }
     } catch (error) {
+      console.error(error);
       setError('登录过程中发生错误');
     } finally {
       setLoading(false);
