@@ -1,3 +1,7 @@
+<!--
+ * @Author: Mr.Car
+ * @Date: 2025-02-26 16:05:27
+-->
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
@@ -34,3 +38,11 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
+## 关于 my-blog
+
+这是一个从0-1的blog项目，我希望用它来熟悉我认为实用的技术，写一些生活感悟，记录自己的变化；
+目前有文章的发表，评论，登陆后的文章管理和删除等；
+
+未来可能会添加一些很 cool 的特性，AI 区块链，等等，感觉区块链是非常有前景的方向了，它可以解决一些数据所有权非常底层的需求；在整个国际化的市场上都有相对旺盛的需求；
