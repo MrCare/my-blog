@@ -4,11 +4,12 @@
  */
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
-import { NextResponse } from "next/server";
-import { authOptions } from "../../auth/[...nextauth]/route";
+import { NextRequest, NextResponse } from "next/server";
+import { authOptions } from "@/lib/auth";
 import { Session } from "@/types";
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+
+export async function GET(request:NextRequest, { params }:{ params: {id: string}}) {
   const post = await prisma.post.findUnique({
     where: { id: Number(params.id) },
     include: { comments: true }, // 包含评论数据
@@ -21,7 +22,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
   return NextResponse.json(post);
 }
 
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
+export async function PUT(request: NextRequest, { params }:{ params: {id: string}}) {
   const session: Session | null = await getServerSession(authOptions);
   if (!session || session.user.role !== "ADMIN") {
     return NextResponse.json({ error: "无权限" }, { status: 403 });
@@ -38,7 +39,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
   return NextResponse.json(updatedPost);
 }
 
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(request: Request, { params }:{ params: {id: string}}) {
   const session: Session | null = await getServerSession(authOptions);
   if (!session || session.user.role !== "ADMIN") {
     return NextResponse.json({ error: "无权限" }, { status: 403 });

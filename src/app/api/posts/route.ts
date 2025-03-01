@@ -3,9 +3,9 @@
  * @Date: 2025-02-26 16:23:36
  */
 import { prisma } from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 import { Session } from "@/types";
 
 
@@ -18,7 +18,7 @@ export async function GET() {
   return NextResponse.json(posts);
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   const session = await getServerSession(authOptions) as Session;
   if (!session || session.user.role !== "ADMIN") {
     return NextResponse.json({ error: "无权限" }, { status: 403 });
