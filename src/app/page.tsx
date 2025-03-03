@@ -5,10 +5,15 @@
 import { prisma } from "@/lib/prisma";
 import { Post } from "@/types";
 import Link from "next/link";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
 
 export default async function Home() {
   const posts:Post[] = await prisma.post.findMany({
     orderBy: { createdAt: "desc" },
+    include: { comments: true }
   })
 
   return (
@@ -22,17 +27,28 @@ export default async function Home() {
             <Link
               href={`/posts/${post.id}`}
               key={post.id.toString()}
-              className="block p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200"
             >
-              <h2 className="text-xl font-semibold text-gray-800 mb-2">
-                {post.title}
-              </h2>
-              <p className="text-sm text-gray-500">
-                {post.createdAt.toLocaleDateString()}
-              </p>
-              {(post?.comments && post?.comments.length > 0) && (
-                <p className="text-dune-sand/90 mt-2">{post.comments.length} 条评论</p>
-              )}
+              <Card className="hover:shadow-lg transition-shadow duration-200 bg-white">
+                <CardHeader>
+                  <CardTitle className="text-xl text-gray-800">
+                    {post.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-gray-500">
+                    {post.createdAt.toLocaleDateString()}
+                  </p>
+                  <Separator className="my-2" />
+                  {post?.comments && post.comments.length > 0 && (
+                    <Badge className="bg-slate-950" variant="secondary">{post.comments.length} 条评论</Badge>
+                  )}
+                  <Separator className="my-2" />
+                  {/* 可选：添加按钮 */}
+                  <Button variant="link" className="mt-4 p-0 h-auto text-gray-600">
+                    查看详情
+                  </Button>
+                </CardContent>
+              </Card>
             </Link>
           ))}
         </div>

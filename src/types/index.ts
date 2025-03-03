@@ -16,7 +16,7 @@ export interface Post {
     title: string;
     content: string;
     createdAt: Date;
-    comments?: { id: number; content: string; macId: string; createdAt: string }[];
+    comments?: { id: number; content: string; macId: string; createdAt: Date }[];
 }
 export interface Comment {
     id: number; // 评论的唯一标识符
