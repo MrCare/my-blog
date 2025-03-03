@@ -14,7 +14,7 @@ generator client {
 //}
 
 datasource db {
-  provider  = "postgresql"
+  provider  = env("DB_PROVIDER") // 使用环境变量选择数据库
   url  	    = env("DATABASE_URL")
 }
 
