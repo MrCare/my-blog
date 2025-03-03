@@ -10,6 +10,7 @@ import { Session } from "@/types";
 
 
 export async function GET(request:NextRequest, { params }:{ params: {id: string}}) {
+  params = await params; // 等待 params
   const post = await prisma.post.findUnique({
     where: { id: Number(params.id) },
     include: { comments: true }, // 包含评论数据

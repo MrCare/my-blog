@@ -6,9 +6,9 @@ import { prisma } from "@/lib/prisma";
 import { Post } from "@/types";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
+import { Heading } from "@/components/ui/heading";
 
 export default async function Home() {
   const posts:Post[] = await prisma.post.findMany({
@@ -19,9 +19,7 @@ export default async function Home() {
   return (
     <div className="min-h-screen bg-gray-100">
       <main className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        <h1 className="text-4xl font-extrabold text-gray-900 mb-8 text-center">
-          Life Blog
-        </h1>
+        <Heading className="mb-8 text-center">Life Blog</Heading>
         <div className="grid gap-6">
           {posts.map((post) => (
             <Link
@@ -40,13 +38,12 @@ export default async function Home() {
                   </p>
                   <Separator className="my-2" />
                   {post?.comments && post.comments.length > 0 && (
-                    <Badge className="bg-slate-950" variant="secondary">{post.comments.length} 条评论</Badge>
+                    <Badge className="mr-4" variant="default">{post.comments.length} 条评论</Badge>
                   )}
-                  <Separator className="my-2" />
                   {/* 可选：添加按钮 */}
-                  <Button variant="link" className="mt-4 p-0 h-auto text-gray-600">
+                  <Badge variant="secondary" className="mt-4 p-0 h-auto text-gray-600">
                     查看详情
-                  </Button>
+                  </Badge>
                 </CardContent>
               </Card>
             </Link>
