@@ -7,11 +7,12 @@
 import { notFound, useRouter } from "next/navigation";
 import React, { FormEvent, Usable } from "react";
 import { useState, useEffect } from "react";
-import { Post, Session } from "@/types"
+import { Comment, Post, Session } from "@/types"
 import MDEditor from "@uiw/react-md-editor"; // 导入 MDEditor
 import Loading from "@/components/Loading";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function PostDetail({ params }: { params: Usable<{ id: string }> }) {
   const [post , setPost] = useState<Post | null>(null);
@@ -77,7 +78,6 @@ export default function PostDetail({ params }: { params: Usable<{ id: string }> 
   }
 
   return (
-    <main className="min-h-screen bg-gray-100">
       <div className="max-w-5xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <article className="bg-white p-8 rounded-lg shadow-lg border border-gray-200">
           <h1 className="text-4xl font-bold text-gray-900 mb-4 tracking-wide">{post.title}</h1>
@@ -88,23 +88,22 @@ export default function PostDetail({ params }: { params: Usable<{ id: string }> 
           {/* 管理员操作按钮 */}
           {session && session.user.role === "ADMIN" && (
             <div className="flex space-x-4 mb-8">
-              <Link
+              <Button asChild variant="secondary" ><Link
                 href={`/posts/edit/${id}`}
-                className="text-blue-600 hover:underline font-medium"
+                className="text-gray-600 hover:underline font-medium"
               >
                 编辑
-              </Link>
-              <button
+              </Link></Button>
+              <Button asChild variant="destructive" ><button
                 onClick={handleDelete}
-                className="text-red-600 hover:underline font-medium"
               >
                 删除
-              </button>
+              </button></Button>
             </div>
           )}
           <section className="mt-8">
             <h2 className="text-2xl font-semibold text-gray-900 mb-4">评论</h2>
-            {post.comments?.map((comment: { id: number; content: string; macId: string; createdAt: string }) => (
+            {post.comments?.map((comment: Comment) => (
               <div key={comment.id} className="p-4 bg-gray-50 rounded-md mb-4">
                 <p className="text-gray-800">{comment.content}</p>
                 <p className="text-sm text-gray-600">由 {comment.macId} 于 {new Date(comment.createdAt).toLocaleString()} 发表</p>
@@ -114,18 +113,12 @@ export default function PostDetail({ params }: { params: Usable<{ id: string }> 
               <textarea 
                 name="content" 
                 required 
-                className="w-full p-3 bg-white border border-gray-300 rounded-md text-gray-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 h-24" 
+                className="w-full p-3 bg-white border border-gray-300 rounded-md text-gray-800 focus:ring-2 focus:ring-gray-500 focus:border-gray-500 h-24" 
               />
-              <button 
-                type="submit" 
-                className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-all"
-              >
-                发表评论
-              </button>
+              <Button asChild><button type="submit">发表评论</button></Button>
             </form>
           </section>
         </article>
       </div>
-    </main>
   );
 }

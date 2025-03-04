@@ -11,6 +11,9 @@
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -48,58 +51,54 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow-md">
-        <div>
-          <h2 className="mt-6 text-center text-4xl font-bold text-gray-800">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
+      <Card className="max-w-md w-full mx-4">
+        <CardHeader>
+          <CardTitle className="text-3xl font-bold text-center text-gray-800 dark:text-gray-100">
             登录账户
-          </h2>
-        </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm space-y-4">
-            <div>
-              <label htmlFor="email" className="sr-only">
-                邮箱地址
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                required
-                className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                placeholder="邮箱地址"
-              />
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  placeholder="邮箱地址"
+                  className="w-full"
+                />
+              </div>
+              <div className="space-y-2">
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  required
+                  placeholder="密码"
+                  className="w-full"
+                />
+              </div>
             </div>
-            <div>
-              <label htmlFor="password" className="sr-only">
-                密码
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                required
-                className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                placeholder="密码"
-              />
-            </div>
-          </div>
 
-          {error && (
-            <div className="text-red-500 text-sm text-center">{error}</div>
-          )}
+            {error && (
+              <div className="text-red-500 dark:text-red-400 text-sm text-center">
+                {error}
+              </div>
+            )}
 
-          <div>
-            <button
+            <Button
               type="submit"
               disabled={loading}
-              className="group relative w-full flex justify-center py-3 px-5 border border-transparent text-lg font-semibold rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+              className="w-full e"
             >
-              {loading ? '登录中...' : '登录'}
-            </button>
-          </div>
-        </form>
-      </div>
+              {loading ? "登录中..." : "登录"}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 }

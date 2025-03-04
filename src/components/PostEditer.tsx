@@ -10,6 +10,7 @@ import { useEffect, useState, useTransition } from "react";
 import { User, Session } from "@/types";
 import PostForm from "@/components/PostForm";
 import Loading from "@/components/Loading";
+// import { Heading } from "./ui/heading";
 
 export default function PostEditer({mode, id}:{mode:string, id:string}) {
   const { data: session } = useSession() as {data: Session | null};
@@ -71,17 +72,15 @@ export default function PostEditer({mode, id}:{mode:string, id:string}) {
   if (loading) return <Loading/>;
 
   return (
-    <main className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-5xl mx-auto">
-        <h1 className="text-2xl font-bold text-gray-900 mb-8">{isEditMode ? "编辑日志" : "新建日志"}</h1>
-        <PostForm
-          initialTitle={initialTitle}
-          initialContent={initialContent}
-          onSubmit={handleSubmit}
-          isPending={isPending}
-          submitText={isEditMode ? "保存" : "发表"}
-        />
-      </div>
-    </main>
+    <div className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+      {/* <Heading className="mb-8 text-center">{isEditMode ? "编辑日志" : "新建日志"}</Heading> */}
+      <PostForm
+        initialTitle={initialTitle}
+        initialContent={initialContent}
+        onSubmit={handleSubmit}
+        isPending={isPending}
+        submitText={isEditMode ? "保存" : "发表"}
+      />
+    </div>
   );
 }

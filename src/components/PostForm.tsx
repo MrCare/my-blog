@@ -6,6 +6,7 @@
 
 import { useState } from "react";
 import MDEditor from "@uiw/react-md-editor";
+import { Button } from "./ui/button";
 
 type PostFormProps = {
   initialTitle?: string;
@@ -47,7 +48,7 @@ export default function PostForm({
           value={title}
           disabled={isPending} // 提交时禁用
           onChange={(e) => setTitle(e.target.value || "")}
-          className="mt-1 block w-full max-w-5xl h-12 rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 transition duration-200 pl-4"
+          className="mt-1 block w-full max-w-5xl h-12 rounded-md border border-gray-300 shadow-sm focus:border-gray-500 focus:ring focus:ring-gray-500 focus:ring-opacity-50 transition duration-200 pl-4"
         />
       </div>
       <div className="flex flex-col">
@@ -66,13 +67,12 @@ export default function PostForm({
         />
       </div>
       <div className="flex">
-        <button
+        <Button asChild><button
           type="submit"
           disabled={isPending} // 提交时禁用
-          className="rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
         >
           {isPending ? "保存中..." : submitText}
-        </button>
+        </button></Button>
       </div>
     </form>
   );
