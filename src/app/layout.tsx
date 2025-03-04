@@ -96,7 +96,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               </div>
             </div>
           </nav>
-          <main className="bg-gray-100 dark:bg-gray-800 h-[calc(100vh-5rem)] w-screen shadow-md">
+          <main className="bg-gray-100 dark:bg-gray-800 h-[calc(100vh-5rem)] w-screen shadow-md overflow-y-auto">
             {children}
           </main>
         </Providers>
